@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>What to say?</title>
+        <meta charset="utf-8">
+        <meta name="robots" content="none">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/style.css">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            a {
+                color: #fff;
+                text-decoration: none;
+            }
+            html, body {
+                background: salmon;
+            }
+            body {
+                color: #fff;
+                font: 24px/26px 'american typewriter', sans-serif;
+                padding: 0 10%;
+            }
+            .logo {
+                font-family: Webdings, sans-serif;
+            }
+            h1, ul {
+                margin: 1em 0;
+            }
+            .where ul {
+                list-style: none;
+            }
+            .when {
+                color: #eee;
+                display: block;
+                font-size: 70%;
+                font-style: normal;
+            }
+            li a {
+                background: rgba(255,255,255,.2);
+                border-radius: 10px;
+                display: block;
+                padding: 5px 10px;
+            }
+            li a:hover {
+                background: rgba(255,255,255,.4);
+            }
+            li a.active {
+                background: rgba(255,255,255,.4);
+                color: #000;
+            }
+            li + li {
+                margin-top: .5em;
+            }
+            section[id] {
+                display: none;
+            }
+            section[id].active {
+                display: block;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1 class="wordmark"><span class="logo"></span> What to say?</h1>
+        </header>
+
+        <section class="where">
+            <h2>Where are you?</h2>
+            <ul>
+                <li><a href="#cafe">Café</a></li>
+                <li><a href="#lunch">Lunch Restaurant</a></li>
+                <li><a href="#dinner">Dinner Restaurant</a></li>
+                <li><a href="#bar">Bar</a></li>
+                <li><a href="#club">Club</a></li>
+                <li><a href="#work">Work</a></li>
+                <li><a href="#dinner-party">Dinner Party</a></li>
+                <li><a href="#grocery-store">Grocery Store</a></li>
+            </ul>
+        </section>
+
+        <section id="cafe" class="cafe">
+            <h3>Café</h3>
+            <ul>
+                <li>What will make me the most buzzed? <em class="when">(When the barista asks you what to order and you already know what you want.)</em></li>
+            </ul>
+        </section>
+
+        <section id="dinner" class="dinner-restaurant">
+            <h3>Dinner Restaurant</h3>
+            <ul>
+                <li>Hi, _____. Thanks, _____. <em class="when">(When the waiter tells you his/her name.)</em></li>
+                <li>Which wine goes well with food? <em class="when">(When the waiter asks about beverages.)</em></li>
+                <li>Awful. Send it back. <em class="when">(When sampling the wine.)</em></li>
+                <li>It's awful. <em class="when">(When asked how the food is.)</em></li>
+            </ul>
+        </section>
+
+        <section id="bar" class="bar">
+            <h3>Bar</h3>
+            <ul>
+                <li>Can I see IDs? &hellip; Just wanted to see if you're as cute in your picture. <em class="when">(When talking to girls near entrance.)</em></li>
+                <li>I'm trying to avoid someone. Quick, let's have a fake conversation. Go. <em class="when">(When accidentally bumping into someone.)</em></li>
+            </ul>
+        </section>
+
+        <section id="club" class="club">
+            <h3>Club</h3>
+            <ul>
+                <li>ID, please. <em class="when">(When waiting outside a club with people.)</em></li>
+                <li>Oh, the wife is going to have a riot when I tell her I was ID'd. <em class="when">(When getting ID'd outside a club.)</em></li>
+            </ul>
+        </section>
+
+        <section id="work" class="work">
+            <h3>Work</h3>
+            <ul>
+                <li>Went on a cruise to Hawaii. And by a cruise to Hawaii I mean suntaned on my balcony all weekend and drank mojitos. <em class="when">(When asked what you did the past weekend.)</em></li>
+            </ul>
+        </section>
+
+        <section id="dinner-party" class="dinner-party">
+            <h3>Dinner Party</h3>
+            <ul>
+                <li>I'm _____. I'm sure you've heard all about me.</li>
+            </ul>
+        </section>
+
+        <script type="text/javascript">
+            function toggle() {
+                var active = document.querySelectorAll('.active');
+                for (var i = 0; i < active.length; i++) {
+                    active[i].classList.remove('active');
+                }
+
+                var newSection = document.getElementById(location.hash.substr(1));
+                if (newSection) {
+                    newSection.classList.add('active');
+                }
+
+                document.querySelector('a[href="' + location.hash + '"]').classList.add('active');
+            }
+
+            window.addEventListener('hashchange', function() {
+                toggle();
+            }, false);
+
+            toggle();
+        </script>
+    </body>
+</html>
