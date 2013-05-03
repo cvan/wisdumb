@@ -56,9 +56,6 @@ function draw() {
     if (visible) {
         $('main div').html(newCard(visible));
     }
-    //setTimeout(function () {
-    //$('article, menu').addClass('show');
-    //}, 500);
 }
 
 for (var i = 0; i < decks.length; i++) {

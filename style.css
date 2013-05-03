@@ -43,15 +43,6 @@ article {
     padding: 1.5em 1em;
 }
 
-main article, main menu {
-    /*opacity: 0;*/
-    /*transition: .05s opacity ease-in-out;*/
-}
-
-main .show {
-    /*opacity: 1;*/
-}
-
 details {
     color: #ccc;
     font-size: 50%;
