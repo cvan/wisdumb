@@ -59,8 +59,10 @@ for (var i = 0; i < decks.length; i++) {
     s = document.createElement('script');
     s.src = 'decks/' + decks[i] + '.js';
     if (i == 0) {
+        // Draw only the first card from the first desk.
         s.onload = draw;
     }
+    // Append `<script>` tag to `<body>` element.
     document.body.appendChild(s);
 }
 
