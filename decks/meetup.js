@@ -1,6 +1,4 @@
-(function() {
 deck([
-
 {
     "id": 1,
     "body": "What did you do before you got here?",
@@ -33,6 +31,4 @@ deck([
     "stranger": true,
     "stage": "attraction"
 }
-
 ]);
-})();
