@@ -52,9 +52,7 @@ function draw() {
         return draw();
     }
 
-    if (visible) {
-        $('main div').html(newCard(visible));
-    }
+    $('main div').html(newCard(visible));
 }
 
 for (var i = 0; i < decks.length; i++) {
