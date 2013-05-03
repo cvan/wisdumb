@@ -36,7 +36,6 @@ function deck(items) {
 }
 
 function draw() {
-    // TODO: If no more cards left, say that!
     visible = queue.shift();
 
     if (!visible) {
