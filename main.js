@@ -64,7 +64,7 @@
         s = document.createElement('script');
         s.src = 'decks/' + decks[i] + '.js';
         if (i == 0) {
-            // Draw only the first card from the first desk.
+            // Draw only the first card from the first deck.
             s.onload = draw;
         }
         // Append `<script>` tag to `<body>` element.
