@@ -26,76 +26,36 @@ body {
     font-family: Webdings, sans-serif;
 }
 
-h1, ul {
-    margin: 1em 0;
-}
-
 h1 {
     cursor: pointer;
+    margin: 1em 0;
 }
 
 h1:hover {
     text-shadow: 0 0 15px rgba(0,0,0,.5);
 }
 
-.where ul {
-    list-style: none;
-}
-
-.when {
-    color: #eee;
-    display: block;
-    font-size: 70%;
-    font-style: normal;
-}
-
-li a {
-    background: rgba(255,255,255,.2);
-    /*border-radius: 10px;*/
-    display: block;
-    padding: 5px 10px;
-}
-
-li a:hover {
-    background: rgba(255,255,255,.4);
-}
-
-li a.active {
-    background: rgba(255,255,255,.4);
-    color: #000;
-}
-
-li + li {
-    margin-top: .5em;
-}
-
-section[id] {
-    display: none;
-}
-
-section[id].active {
-    display: block;
-}
-
 article {
     background: rgba(255,255,255,.2);
     display: block;
+    font-size: 150%;
+    line-height: 1.1;
     padding: 1.5em 1em;
 }
 
 main article, main menu {
-    opacity: 0;
-    transition: .3s opacity ease-in-out;
+    /*opacity: 0;*/
+    /*transition: .05s opacity ease-in-out;*/
 }
 
 main .show {
-    opacity: 1;
+    /*opacity: 1;*/
 }
 
 details {
     color: #ccc;
-    font-size: 80%;
-    margin-top: .5em;
+    font-size: 50%;
+    margin-top: 1em;
 }
 
 header {
@@ -112,6 +72,7 @@ menu.main {
     float: right;
     font-size: 80%;
     margin: 1.5em 0;
+    padding: 1em 1.25em;
 }
 
 main {
