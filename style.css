@@ -8,6 +8,10 @@ a {
     text-decoration: none;
 }
 
+article, details, main, menu {
+    display: block;
+}
+
 html, body {
     background: purple;
 }
@@ -24,6 +28,14 @@ body {
 
 h1, ul {
     margin: 1em 0;
+}
+
+h1 {
+    cursor: pointer;
+}
+
+h1:hover {
+    text-shadow: 0 0 15px rgba(0,0,0,.5);
 }
 
 .where ul {
@@ -63,4 +75,88 @@ section[id] {
 
 section[id].active {
     display: block;
+}
+
+article {
+    background: rgba(255,255,255,.2);
+    display: block;
+    padding: 1.5em 1em;
+}
+
+main article, main menu {
+    opacity: 0;
+    transition: .3s opacity ease-in-out;
+}
+
+main .show {
+    opacity: 1;
+}
+
+details {
+    color: #ccc;
+    font-size: 80%;
+    margin-top: .5em;
+}
+
+header {
+    float: left;
+}
+
+menu {
+    background-color: rgba(0,0,0,.3);
+    padding: 1em;
+    text-align: right;
+}
+
+menu.main {
+    float: right;
+    font-size: 80%;
+    margin: 1.5em 0;
+}
+
+main {
+    clear: both;
+}
+
+button {
+    background: purple;
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font: inherit;
+    padding: .5em 1em;
+}
+
+button + button {
+    margin-left: 1em;
+}
+
+button:hover {
+    background: #fff;
+    color: purple;
+}
+
+.said-it {
+    background: darkgreen;
+}
+
+.said-it:hover {
+    color: darkgreen;
+}
+
+.skip-it {
+    background: gray;
+}
+
+.skip-it:hover {
+    color: gray;
+}
+
+.forget-it {
+    background: darkred;
+}
+
+.forget-it:hover {
+    color: darkred;
 }

@@ -13,6 +13,12 @@
             <h1 class="wordmark"><span class="logo"></span> What to say?</h1>
         </header>
 
+        <menu class="main">
+            <button class="view-all">View all</button>
+            <button class="reset-all">Reset all</button>
+        </menu>
+
+<!--
         <section class="where">
             <h2>What stage are you in?</h2>
             <ul>
@@ -35,11 +41,7 @@ final process:
                 She should impress me.
             </p>
             <ul>
-
-what did you do before you got here?
-
-
-                <li>If someone said, "tell me your three most positive, dominant qualities as to why you're different," what would they be? <em class="when">(When attracting/qualifying a girl.)</em></li>
+                            <li>If someone said, "tell me your three most positive, dominant qualities as to why you're different," what would they be? <em class="when">(When attracting/qualifying a girl.)</em></li>
                 <li>I get the feeling that if we were at a nice restaurant, you would pay for everyone there. <em class="when">(When attracting/self-fulfilling-prophecying a girl.)</em></li>
                 <li>You probably hear this all the time. You're so open. That's really rare. I appreciate that. <em class="when">(When attracting/self-fulfilling-prophecying a girl.)</em></li>
                 <li>You're career driven. That's really cool. I like that. <em class="when">(When attracting/self-fulfilling-prophecying a girl.)</em></li>
@@ -86,27 +88,16 @@ what did you do before you got here?
 
         <li>I walked in and you were grabbing my ass. All over me.</li>
         <li>Went on a cruise to Hawaii. And by a cruise to Hawaii I mean suntaned on my balcony all weekend and drank mojitos. <em class="when">(When asked what you've been up to.)</em></li>
+-->
 
-        <script type="text/javascript">
-            function toggle() {
-                var active = document.querySelectorAll('.active');
-                for (var i = 0; i < active.length; i++) {
-                    active[i].classList.remove('active');
-                }
+<main>
+    <div></div>
+    <menu>
+        <button class="said-it">Said it</button><button class="forget-it">Forget it</button><button class="skip-it">Skip it</button>
+    </menu>
+</main>
 
-                var newSection = document.getElementById(location.hash.substr(1));
-                if (newSection) {
-                    newSection.classList.add('active');
-                }
-
-                document.querySelector('a[href="' + location.hash + '"]').classList.add('active');
-            }
-
-            window.addEventListener('hashchange', function() {
-                toggle();
-            }, false);
-
-            toggle();
-        </script>
+        <script type="text/javascript" src="zepto.min.js"></script>
+        <script type="text/javascript" src="main.js"></script>
     </body>
 </html>
