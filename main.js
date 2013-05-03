@@ -28,9 +28,11 @@ function newCard(card) {
 }
 
 function deck(items) {
+    // Append this deck's cards to the global `cards` array.
     cards = cards.concat(items);
+
+    // Append this deck's cards to the global `queue` array.
     queue = queue.concat(items);
-    draw();
 }
 
 function draw() {
@@ -62,6 +64,9 @@ function draw() {
 for (var i = 0; i < decks.length; i++) {
     s = document.createElement('script');
     s.src = 'decks/' + decks[i] + '.js';
+    if (i == 0) {
+        s.onload = draw;
+    }
     document.body.appendChild(s);
 }
 
