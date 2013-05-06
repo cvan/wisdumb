@@ -1,6 +1,6 @@
 deck({
-    "slug": "meetup",
-    "name": "Meetup with Strangers",
+    "slug": "hookah",
+    "name": "Hookah Bar",
     "author": "Christopher",
     "items": [
         {

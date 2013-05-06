@@ -112,3 +112,12 @@ button:hover {
 .forget-it:hover {
     color: darkred;
 }
+
+form {
+    display: inline-block;
+    margin-right: 1em;
+}
+
+select[name=deck] {
+    font-size: 120%;
+}

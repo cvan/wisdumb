@@ -1,14 +1,31 @@
 (function() {
-    var decks = ['meetup'];
+    var decks = [
+        'hookah',
+        'meetup'
+    ];
     var cards = [];
     var queue = [];
     var s;
-    var visible;
+    var visibleDeck;
+    var visibleCard;
 
     var said = [];
     var skip = [];
     var forget = [];
 
+    function loadDropdown(deckName) {
+        var deckHTML = '';
+        decks.forEach(function(x) {
+            deckHTML += '<option' + (x == deckName ? ' selected' : '') + '>' + x + '</option>';
+        });
+        $('select[name=deck]').append(deckHTML);
+        $('select[name=deck]').on('change', function(e) {
+            location.search = '?deck=' + $(this).val();
+        });
+    }
+
+    var deckName = loadDeck();
+    loadDropdown(deckName);
 
     function escape_(s) {
         if (typeof s === 'string') {
@@ -28,76 +45,80 @@
                '<details open>' + escape_(card.details) + '</details></article>';
     }
 
-    function deck(items) {
+    function deck(deckObj) {
+        visibleDeck = deckObj;
+
         // Append this deck's cards to the global `cards` array.
-        cards = cards.concat(items);
+        cards = cards.concat(deckObj.items);
 
         // Append this deck's cards to the global `queue` array.
-        queue = queue.concat(items);
+        queue = queue.concat(deckObj.items);
     }
 
     // So each `deck/*.js` script can initialize its `deck` (à la JSONP).
     window.deck = deck;
 
     function draw() {
-        visible = queue.shift();
+        visibleCard = queue.shift();
 
-        if (!visible) {
+        if (!visibleCard) {
             $('main div').html("<article>You're on your own!</article>");
             $('main menu').hide();
             return;
         }
 
-        var rememberedSaid = JSON.parse(localStorage.said || '[]');
-        var rememberedForget = JSON.parse(localStorage.forget || '[]');
-        if (rememberedSaid.indexOf(visible.id) > -1 ||
-            rememberedForget.indexOf(visible.id) > -1) {
+        var rememberedSaid = JSON.parse(localStorage[deckName + '_said'] || '[]');
+        var rememberedForget = JSON.parse(localStorage[deckName + '_forget'] || '[]');
+        if (rememberedSaid.indexOf(visibleCard.id) > -1 ||
+            rememberedForget.indexOf(visibleCard.id) > -1) {
             // Draw another if we've already "said it" or "forget it."
             return draw();
         }
 
-        $('main div').html(newCard(visible));
+        $('main div').html(newCard(visibleCard));
     }
 
-    // Include each `.js` file from all the decks.
-    for (var i = 0; i < decks.length; i++) {
+    function loadDeck() {
+        // Include each `.js` file from all the decks.
+        var deck = location.search.replace('?deck=', '');
+
         s = document.createElement('script');
-        s.src = 'decks/' + decks[i] + '.js';
-        if (i == 0) {
-            // Draw only the first card from the first deck.
-            s.onload = draw;
-        }
+        s.src = 'decks/' + deck + '.js';
+        // Draw cards from this deck.
+        s.onload = draw;
         // Append `<script>` tag to `<body>` element.
         document.body.appendChild(s);
+
+        return deck;
     }
 
     function saidIt() {
-        said.push(visible);
+        said.push(visibleCard);
 
         // Look up the remembered value in `localStorage`. Then store it.
-        var remembered = JSON.parse(localStorage.said || '[]');
-        remembered.push(visible.id);
-        localStorage.said = JSON.stringify(remembered);
+        var remembered = JSON.parse(localStorage[deckName + '_said'] || '[]');
+        remembered.push(visibleCard.id);
+        localStorage[deckName + '_said'] = JSON.stringify(remembered);
 
         draw();
     }
 
     function forgetIt() {
-        forget.push(visible);
+        forget.push(visibleCard);
 
         // Look up the remembered value in `localStorage`. Then store it.
-        var remembered = JSON.parse(localStorage.forget || '[]');
-        remembered.push(visible.id);
-        localStorage.forget = JSON.stringify(remembered);
+        var remembered = JSON.parse(localStorage[deckName + '_forget'] || '[]');
+        remembered.push(visibleCard.id);
+        localStorage[deckName + '_forget'] = JSON.stringify(remembered);
 
         draw();
     }
 
     function skipIt() {
-        skip.push(visible);
+        skip.push(visibleCard);
 
         // Push onto the end of the queue.
-        queue.push(visible);
+        queue.push(visibleCard);
         draw();
     }
 
@@ -109,16 +130,16 @@
     $(document.body).on('click', 'button', function() {
         switch ($(this).attr('class')) {
             case 'said-it':
-                console.log('said', visible.id);
-                saidIt(visible);
+                console.log('said', visibleCard.id);
+                saidIt(visibleCard);
                 break;
             case 'forget-it':
-                console.log('forget', visible.id);
-                forgetIt(visible);
+                console.log('forget', visibleCard.id);
+                forgetIt(visibleCard);
                 break;
             case 'skip-it':
-                console.log('skip', visible.id);
-                skipIt(visible);
+                console.log('skip', visibleCard.id);
+                skipIt(visibleCard);
                 break;
             case 'view-all':
                 console.log('view-all');
