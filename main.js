@@ -42,7 +42,7 @@
     function newCard(card) {
         return '<article id="card-' + escape_(card.id) +
                '" data-id="' + escape_(card.id) + '">' + escape_(card.body) +
-               '<details open>' + escape_(card.details) + '</details></article>';
+               '<details open>' + escape_(card.details || '') + '</details></article>';
     }
 
     function deck(deckObj) {
