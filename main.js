@@ -1,9 +1,8 @@
 (function() {
-    var decks = [
-        'hookah',
-        'meetup'
-    ];
     var cards = [];
+    var decks = [];
+    var decksObj = {};
+    var deckName;
     var queue = [];
     var s;
     var visibleDeck;
@@ -13,19 +12,29 @@
     var skip = [];
     var forget = [];
 
+    var usersRef = new Firebase('https://wisdumb.firebaseio.com/decks');
+    usersRef.on('value', function(snapshot) {
+        snapshot.val().forEach(function(value) {
+            decks.push([value.slug, value.name]);
+            decksObj[value.slug] = value;
+        });
+        deckName = loadDeck();
+        loadDropdown(deckName);
+    });
+
     function loadDropdown(deckName) {
         var deckHTML = '';
-        decks.forEach(function(x) {
-            deckHTML += '<option' + (x == deckName ? ' selected' : '') + '>' + x + '</option>';
+        var optionValue;
+        var optionText;
+        decks.forEach(function(value) {
+            optionValue = value[0];
+            optionText = value[1];
+            deckHTML += '<option value="' + optionValue + '"' + (optionValue == deckName ? ' selected' : '') + '>' + optionText + '</option>';
         });
-        $('select[name=deck]').append(deckHTML);
-        $('select[name=deck]').on('change', function(e) {
+        $('select[name=deck]').append(deckHTML).on('change', function(e) {
             location.search = '?deck=' + $(this).val();
         });
     }
-
-    var deckName = loadDeck();
-    loadDropdown(deckName);
 
     function escape_(s) {
         if (typeof s === 'string') {
@@ -44,19 +53,6 @@
                '" data-id="' + escape_(card.id) + '">' + escape_(card.body) +
                '<details open>' + escape_(card.details || '') + '</details></article>';
     }
-
-    function deck(deckObj) {
-        visibleDeck = deckObj;
-
-        // Append this deck's cards to the global `cards` array.
-        cards = cards.concat(deckObj.items);
-
-        // Append this deck's cards to the global `queue` array.
-        queue = queue.concat(deckObj.items);
-    }
-
-    // So each `deck/*.js` script can initialize its `deck` (à la JSONP).
-    window.deck = deck;
 
     function draw() {
         visibleCard = queue.shift();
@@ -79,17 +75,23 @@
     }
 
     function loadDeck() {
-        // Include each `.js` file from all the decks.
-        var deck = location.search.replace('?deck=', '');
+        deckName = location.search.replace('?deck=', '');
 
-        s = document.createElement('script');
-        s.src = 'decks/' + deck + '.js';
-        // Draw cards from this deck.
-        s.onload = draw;
-        // Append `<script>` tag to `<body>` element.
-        document.body.appendChild(s);
+        var deckObj = decksObj[deckName];
+        if (deckObj) {
+            visibleDeck = deckObj;
 
-        return deck;
+            // Append this deck's cards to the global `cards` array.
+            cards = cards.concat(deckObj.items);
+
+            // Append this deck's cards to the global `queue` array.
+            queue = queue.concat(deckObj.items);
+
+            // Draw first card.
+            draw();
+        }
+
+        return deckName;
     }
 
     function saidIt() {
