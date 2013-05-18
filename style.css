@@ -40,15 +40,16 @@ h1:hover {
 article {
     background: rgba(255,255,255,.2);
     display: block;
-    font-size: 150%;
-    line-height: 1.1;
+    font-size: 28px;
+    line-height: 1.3;
     padding: 30px 15px;
 }
 
 details {
     color: #ccc;
-    font-size: 50%;
-    margin-top: 1em;
+    font-size: 18px;
+    line-height: 1.6;
+    margin-top: 15px;
 }
 
 header {
@@ -61,23 +62,27 @@ menu {
     text-align: right;
 }
 
-menu.main {
-    float: right;
-    font-size: 80%;
-    margin: 1.5em 0;
-    padding: 1em 1.25em;
-}
 
 main {
     clear: both;
 }
 
-main menu {
+menu {
     /* To allow `button`s to be `display: inline-block` */
+    overflow: hidden;
     font-size: 0;
 }
 
-button {
+menu * {
+    font-size: 16px;
+}
+
+/* Hide every button except the "Add Card" button. */
+main menu.empty button:not(.add-card) {
+    display: none;
+}
+
+button, .button {
     background: purple;
     border: 0;
     color: #fff;
@@ -85,11 +90,22 @@ button {
     display: inline-block;
     font-family: inherit;
     font-size: 18px;
-    padding: .5em 1em;
+    line-height: 1;
+    padding: 10px 15px;
 }
 
-button + button {
-    margin-left: 1em;
+button[type=submit] {
+    padding: 10px 60px;
+}
+
+.button.cancel {
+    background: rgba(0,0,0,.1);
+    color: #ccc;
+}
+
+button + button,
+button + .button {
+    margin-left: 15px;
 }
 
 button:hover {
@@ -97,7 +113,13 @@ button:hover {
     color: purple;
 }
 
+.button.cancel:hover {
+    background: #ccc;
+    color: purple;
+}
+
 .add-card {
+    display: none;  /* When you select a card we make this `display: block` */
     float: left;
 }
 
@@ -125,9 +147,9 @@ button:hover {
     color: darkred;
 }
 
-form {
+menu form {
     display: inline-block;
-    margin-right: 1em;
+    margin-right: 15px;
 }
 
 select[name=deck] {
@@ -170,5 +192,7 @@ article {
     padding: 30px 15px;
 }
 
-@media (max-width: 800px) {
+.create {
+    /* Clicking on "Add Card" toggles the form. */
+    display: none;
 }

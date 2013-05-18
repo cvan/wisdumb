@@ -25,9 +25,28 @@
 
         <main>
             <menu>
-                <button class="said-it">Said it</button><button class="forget-it">Forget it</button><button class="skip-it">Skip it</button>
+                <button class="add-card">Add Card</button>
+                <button class="said-it">Said it</button>
+                <button class="forget-it">Forget it</button>
+                <button class="skip-it">Skip it</button>
             </menu>
-            <div></div>
+            <div class="view"></div>
+            <div class="create">
+                <article>
+                    <form class="new-card">
+                        <label>
+                            Title
+                            <textarea name="body" required></textarea>
+                        </label>
+                        <label>
+                            Details
+                            <textarea name="details"></textarea>
+                        </label>
+                        <button type="submit">Add</button>
+                        <a href="javascript:" class="button cancel">Cancel</a>
+                    </form>
+                </article>
+            </div>
         </main>
 
         <script type="text/javascript" src="zepto.min.js"></script>

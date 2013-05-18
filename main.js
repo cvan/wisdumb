@@ -12,9 +12,11 @@
     var skip = [];
     var forget = [];
 
-    var usersRef = new Firebase('https://wisdumb.firebaseio.com/decks');
-    usersRef.on('value', function(snapshot) {
+    var decksRef = new Firebase('https://wisdumb.firebaseio.com/decks');
+    decksRef.on('value', function(snapshot) {
+        var idx = 0;
         snapshot.val().forEach(function(value) {
+            value.pk = idx++;
             decks.push([value.slug, value.name]);
             decksObj[value.slug] = value;
         });
@@ -58,8 +60,8 @@
         visibleCard = queue.shift();
 
         if (!visibleCard) {
-            $('main div').html("<article>You're on your own!</article>");
-            $('main menu').hide();
+            $('.view').html("<article>You're on your own!</article>");
+            $('main menu').addClass('empty');
             return;
         }
 
@@ -71,7 +73,7 @@
             return draw();
         }
 
-        $('main div').html(newCard(visibleCard));
+        $('.view').html(newCard(visibleCard));
     }
 
     function loadDeck() {
@@ -81,17 +83,30 @@
         if (deckObj) {
             visibleDeck = deckObj;
 
-            // Append this deck's cards to the global `cards` array.
-            cards = cards.concat(deckObj.items);
-
-            // Append this deck's cards to the global `queue` array.
-            queue = queue.concat(deckObj.items);
+            // Append this deck's cards to the global `cards` and `queue` arrays.
+            var card;
+            for (idx in deckObj.items) {
+                card = deckObj.items[idx];
+                card.id = idx;
+                cards.push(card);
+                queue.push(card);
+            }
 
             // Draw first card.
             draw();
+
+            showAddCardButton();
         }
 
         return deckName;
+    }
+
+    function showAddCardButton() {
+        $('.add-card').show();
+    }
+
+    function toggleAddCard() {
+        $('.view, .create').toggle();
     }
 
     function saidIt() {
@@ -131,6 +146,10 @@
 
     $(document.body).on('click', 'button', function() {
         switch ($(this).attr('class')) {
+            case 'add-card':
+                console.log('add');
+                toggleAddCard();
+                break;
             case 'said-it':
                 console.log('said', visibleCard.id);
                 saidIt(visibleCard);
@@ -154,5 +173,26 @@
         $('.show').removeClass('show');
     }).on('click', 'h1', function() {
         location.reload();
+    }).on('submit', '.new-card', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $this = $(this);
+        var deckNumber = decksObj[deckName].pk;
+        decksRef.child(deckNumber + '/items').push({
+            body: $this.find('textarea[name=body]').val(),
+            details: $this.find('textarea[name=details]').val(),
+            position: 0
+        });
+        // Clear out the `textarea`s.
+        $this.find('textarea').val('');
+
+        // If the queue was empty, it's not anymore now!
+        toggleAddCard();
+
+        // Show the other buttons if the queue was empty before this addition.
+        $('menu.empty').removeClass('empty');
+    }).on('click', '.cancel', function() {
+        toggleAddCard();
     });
+
 })();
