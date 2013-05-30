@@ -16,12 +16,18 @@
     decksRef.on('value', function(snapshot) {
         var idx = 0;
         snapshot.val().forEach(function(value) {
-            value.pk = idx++;
-            decks.push([value.slug, value.name]);
-            decksObj[value.slug] = value;
+            if (!(value.slug in decksObj)) {
+                value.pk = idx++;
+                decks.push([value.slug, value.name]);
+                decksObj[value.slug] = value;
+            }
         });
         deckName = loadDeck();
         loadDropdown(deckName);
+    });
+
+    $('select[name=deck]').on('change', function(e) {
+        location.search = '?deck=' + $(this).val();
     });
 
     function loadDropdown(deckName) {
@@ -31,11 +37,13 @@
         decks.forEach(function(value) {
             optionValue = value[0];
             optionText = value[1];
-            deckHTML += '<option value="' + optionValue + '"' + (optionValue == deckName ? ' selected' : '') + '>' + optionText + '</option>';
+            if (!$('select[name=deck] option[value="' + optionValue + '"]').length) {
+                deckHTML += '<option value="' + optionValue + '"' + (optionValue == deckName ? ' selected' : '') + '>' + optionText + '</option>';
+            }
         });
-        $('select[name=deck]').append(deckHTML).on('change', function(e) {
-            location.search = '?deck=' + $(this).val();
-        });
+        if (deckHTML) {
+            $('select[name=deck]').append(deckHTML);
+        }
     }
 
     function escape_(s) {
