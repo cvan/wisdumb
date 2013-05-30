@@ -152,7 +152,7 @@
         location.reload();
     }
 
-    $(document.body).on('click', 'button', function() {
+    $(document.body).on('pointerdown', 'button', function() {
         switch ($(this).attr('class')) {
             case 'add-card':
                 console.log('add');
@@ -179,7 +179,7 @@
                 break;
         }
         $('.show').removeClass('show');
-    }).on('click', 'h1', function() {
+    }).on('pointerdown', 'h1', function() {
         location.reload();
     }).on('submit', '.new-card', function(e) {
         e.preventDefault();
@@ -199,7 +199,7 @@
 
         // Show the other buttons if the queue was empty before this addition.
         $('menu.empty').removeClass('empty');
-    }).on('click', '.cancel', function() {
+    }).on('pointerdown', '.cancel', function() {
         toggleAddCard();
     });
 
