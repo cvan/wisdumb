@@ -118,11 +118,12 @@ button:hover {
     color: purple;
 }
 
-.add-card {
+.add-card,
+.edit-deck {
     display: none;  /* When you select a card we make this `display: block` */
 }
 
-button.add {
+button.organize {
     float: left;
 }
 

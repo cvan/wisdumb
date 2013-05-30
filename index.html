@@ -14,7 +14,8 @@
         </header>
 
         <menu class="main">
-            <button class="add add-deck">Add deck</button>
+            <button class="organize add-deck">Add deck</button>
+            <button class="organize edit-deck">Edit deck</button>
             <form>
                 <select name="deck">
                     <option value="">Select deck</option>
@@ -26,7 +27,7 @@
 
         <div class="create create-deck">
             <article>
-                <form class="new-deck">
+                <form class="form-new-deck" method="post">
                     <label>
                         Title
                         <input type="text" name="title" required>
@@ -45,9 +46,29 @@
             </article>
         </div>
 
+        <div class="create edit-deck">
+            <article>
+                <form class="form-edit-deck" method="post">
+                    <label>
+                        Title
+                        <input type="text" name="title" required>
+                    </label>
+                    <label>
+                        Author
+                        <select name="author" required>
+                            <option value="">Select author</option>
+                            <option value="1">avi</option>
+                            <option value="0">seavan</option>
+                        </select>
+                    </label>
+                    <button type="submit">Add</button>
+                    <a href="javascript:" class="button cancel">Cancel</a>
+                </form>
+            </article>
+        </div>
         <main>
             <menu>
-                <button class="add add-card">Add card</button>
+                <button class="organize add-card">Add card</button>
                 <button class="said-it">Said it</button>
                 <button class="forget-it">Forget it</button>
                 <button class="skip-it">Skip it</button>
@@ -55,7 +76,7 @@
             <div class="view"></div>
             <div class="create create-card">
                 <article>
-                    <form class="new-card">
+                    <form class="form-new-card">
                         <label>
                             Title
                             <textarea name="body" required></textarea>

@@ -3,6 +3,7 @@
     var decks = [];
     var decksObj = {};
     var deckName;
+    var idx;
     var queue = [];
     var s;
     var visibleDeck;
@@ -14,12 +15,11 @@
 
     var decksRef = new Firebase('https://wisdumb.firebaseio.com/decks');
     decksRef.on('value', function(snapshot) {
-        var idx = 0;
         var value;
         for (idx in snapshot.val()) {
             value = snapshot.val()[idx];
             if (!(value.slug in decksObj)) {
-                value.pk = idx++;
+                value.pk = idx;
                 decks.push([value.slug, value.name]);
                 decksObj[value.slug] = value;
             }
@@ -39,13 +39,10 @@
         decks.forEach(function(value) {
             optionValue = value[0];
             optionText = value[1];
-            if (!$('select[name=deck] option[value="' + optionValue + '"]').length) {
-                deckHTML += '<option value="' + optionValue + '"' + (optionValue == deckName ? ' selected' : '') + '>' + optionText + '</option>';
-            }
+            deckHTML += '<option value="' + optionValue + '"' + (optionValue == deckName ? ' selected' : '') + '>' + optionText + '</option>';
         });
-        if (deckHTML) {
-            $('select[name=deck]').append(deckHTML);
-        }
+        $('select[name=deck] option[value=""] ~ option').remove();
+        $('select[name=deck]').append(deckHTML);
     }
 
     function escape_(s) {
@@ -118,6 +115,7 @@
             // Draw first card.
             draw();
 
+            showEditDeckButton();
             showAddCardButton();
         }
 
@@ -125,11 +123,22 @@
     }
 
     function toggleAddDeck() {
-        $('.create-deck').toggle();
+        $('div.create-deck').toggle();
+    }
+
+    function toggleEditDeck() {
+        var $div = $('div.edit-deck');
+        $div.toggle();
+        $div.find('input[name=title]').val(visibleDeck.name);
+        $div.find('select[name=author]').val(visibleDeck.author);
+    }
+
+    function showEditDeckButton() {
+        $('button.edit-deck').show();
     }
 
     function showAddCardButton() {
-        $('.add-card').show();
+        $('button.add-card').show();
     }
 
     function toggleAddCard() {
@@ -173,11 +182,15 @@
 
     $(document.body).on('pointerdown', 'button', function() {
         switch ($(this).attr('class')) {
-            case 'add add-deck':
+            case 'organize add-deck':
                 console.log('add-deck');
                 toggleAddDeck();
                 break;
-            case 'add add-card':
+            case 'organize edit-deck':
+                console.log('edit-deck');
+                toggleEditDeck();
+                break;
+            case 'organize add-card':
                 console.log('add-card');
                 toggleAddCard();
                 break;
@@ -206,7 +219,7 @@
         location.reload();
     }).on('pointerdown', '.create-deck .cancel', function() {
         toggleAddDeck();
-    }).on('submit', '.new-deck', function(e) {
+    }).on('submit', '.form-new-deck', function(e) {
         e.preventDefault();
         e.stopPropagation();
         var $this = $(this);
@@ -217,12 +230,23 @@
             author: +$this.find('select[name=author]').val(),
             items: {}
         });
-    }).on('submit', '.new-card', function(e) {
+    }).on('submit', '.form-edit-deck', function(e) {
         e.preventDefault();
         e.stopPropagation();
         var $this = $(this);
-        var deckNumber = decksObj[deckName].pk;
-        decksRef.child(deckNumber + '/items').push({
+        var title = $this.find('input[name=title]').val();
+        var slug = slugify(title);
+        decksRef.child(visibleDeck.pk).update({
+            name: title,
+            slug: slug,
+            author: +$this.find('select[name=author]').val()
+        });
+        window.location.search = '?deck=' + slug;
+    }).on('submit', '.form-new-card', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $this = $(this);
+        decksRef.child(visibleDeck.pk + '/items').push({
             body: $this.find('textarea[name=body]').val(),
             details: $this.find('textarea[name=details]').val(),
             position: 0
