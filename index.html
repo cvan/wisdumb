@@ -14,6 +14,7 @@
         </header>
 
         <menu class="main">
+            <button class="add add-deck">Add deck</button>
             <form>
                 <select name="deck">
                     <option value="">Select deck</option>
@@ -23,15 +24,36 @@
             <button class="reset-all">Reset all</button>
         </menu>
 
+        <div class="create create-deck">
+            <article>
+                <form class="new-deck">
+                    <label>
+                        Title
+                        <input type="text" name="title" required>
+                    </label>
+                    <label>
+                        Author
+                        <select name="author" required>
+                            <option value="">Select author</option>
+                            <option value="1">avi</option>
+                            <option value="0">seavan</option>
+                        </select>
+                    </label>
+                    <button type="submit">Add</button>
+                    <a href="javascript:" class="button cancel">Cancel</a>
+                </form>
+            </article>
+        </div>
+
         <main>
             <menu>
-                <button class="add-card">Add Card</button>
+                <button class="add add-card">Add card</button>
                 <button class="said-it">Said it</button>
                 <button class="forget-it">Forget it</button>
                 <button class="skip-it">Skip it</button>
             </menu>
             <div class="view"></div>
-            <div class="create">
+            <div class="create create-card">
                 <article>
                     <form class="new-card">
                         <label>

@@ -15,13 +15,15 @@
     var decksRef = new Firebase('https://wisdumb.firebaseio.com/decks');
     decksRef.on('value', function(snapshot) {
         var idx = 0;
-        snapshot.val().forEach(function(value) {
+        var value;
+        for (idx in snapshot.val()) {
+            value = snapshot.val()[idx];
             if (!(value.slug in decksObj)) {
                 value.pk = idx++;
                 decks.push([value.slug, value.name]);
                 decksObj[value.slug] = value;
             }
-        });
+        }
         deckName = loadDeck();
         loadDropdown(deckName);
     });
@@ -53,6 +55,19 @@
                     .replace(/</g, '&lt;')
                     .replace(/'/g, '&#39;')
                     .replace(/"/g, '&#34;');
+        } else {
+            return s;
+        }
+    }
+
+    function slugify(s) {
+        if (typeof s === 'string') {
+            return s.toLowerCase()
+                    .replace(/\s+/g, '-')      // Replace spaces with dashes
+                    .replace(/[^\w\-]+/g, '')  // Remove anything non-alphanumeric
+                    .replace(/\-\-+/g, '-')    // Collapse dashes
+                    .replace(/^-+/, '')        // Strip leading whitespace
+                    .replace(/-+$/, '');       // Strip trailing whitespace
         } else {
             return s;
         }
@@ -109,12 +124,16 @@
         return deckName;
     }
 
+    function toggleAddDeck() {
+        $('.create-deck').toggle();
+    }
+
     function showAddCardButton() {
         $('.add-card').show();
     }
 
     function toggleAddCard() {
-        $('.view, .create').toggle();
+        $('.view, .create-card').toggle();
     }
 
     function saidIt() {
@@ -154,8 +173,12 @@
 
     $(document.body).on('pointerdown', 'button', function() {
         switch ($(this).attr('class')) {
-            case 'add-card':
-                console.log('add');
+            case 'add add-deck':
+                console.log('add-deck');
+                toggleAddDeck();
+                break;
+            case 'add add-card':
+                console.log('add-card');
                 toggleAddCard();
                 break;
             case 'said-it':
@@ -181,6 +204,19 @@
         $('.show').removeClass('show');
     }).on('pointerdown', 'h1', function() {
         location.reload();
+    }).on('pointerdown', '.create-deck .cancel', function() {
+        toggleAddDeck();
+    }).on('submit', '.new-deck', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $this = $(this);
+        var title = $this.find('input[name=title]').val();
+        decksRef.push({
+            name: title,
+            slug: slugify(title),
+            author: +$this.find('select[name=author]').val(),
+            items: {}
+        });
     }).on('submit', '.new-card', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -199,7 +235,7 @@
 
         // Show the other buttons if the queue was empty before this addition.
         $('menu.empty').removeClass('empty');
-    }).on('pointerdown', '.cancel', function() {
+    }).on('pointerdown', '.create-card .cancel', function() {
         toggleAddCard();
     });
 

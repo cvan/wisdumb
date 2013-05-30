@@ -120,6 +120,9 @@ button:hover {
 
 .add-card {
     display: none;  /* When you select a card we make this `display: block` */
+}
+
+button.add {
     float: left;
 }
 
@@ -156,17 +159,27 @@ select[name=deck] {
     font-size: 120%;
 }
 
-label, textarea {
+input[type=text], label, select, textarea {
     display: block;
+}
+
+input[type=text], textarea {
+    border-width: 0;
+    font: inherit;
+    font-size: 15px;
+    padding: 5px;
+    width: 100%;
+}
+
+input[name=title] {
+    font-size: 20px;
+    font-weight: 500;
 }
 
 textarea {
     font: inherit;
-    font-size: 15px;
     height: 50px;
     margin-top: 5px;
-    padding: 5px;
-    width: 100%;
 }
 
 textarea[name=body] {
