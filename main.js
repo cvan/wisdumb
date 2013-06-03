@@ -180,7 +180,7 @@
         location.reload();
     }
 
-    $(document.body).on('pointerdown', 'button', function() {
+    $(document.body).on('pointerclick', 'button', function() {
         switch ($(this).attr('class')) {
             case 'organize add-deck':
                 console.log('add-deck');
@@ -215,9 +215,9 @@
                 break;
         }
         $('.show').removeClass('show');
-    }).on('pointerdown', 'h1', function() {
+    }).on('pointerclick', 'h1', function() {
         location.reload();
-    }).on('pointerdown', '.create-deck .cancel', function() {
+    }).on('pointerclick', '.create-deck .cancel', function() {
         toggleAddDeck();
     }).on('submit', '.form-new-deck', function(e) {
         e.preventDefault();
@@ -259,7 +259,7 @@
 
         // Show the other buttons if the queue was empty before this addition.
         $('menu.empty').removeClass('empty');
-    }).on('pointerdown', '.create-card .cancel', function() {
+    }).on('pointerclick', '.create-card .cancel', function() {
         toggleAddCard();
     });
 
