@@ -5,15 +5,14 @@ wisdumb
 Installation
 ------------
 
-    git clone git@github.com:cvan/whattosay.git
+    git clone git@github.com:cvan/wisdumb.git
 
 
 Development
 -----------
 
-    cd whattosay
-    python -m SimpleHTTPServer 7000
+Open in the terminal:
 
-Go to a browser and open up
+    cd wisdumb
 
-    http://localhost:7000
+Open the page in the browser, `index.html`.
