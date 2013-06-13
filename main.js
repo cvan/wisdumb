@@ -1,4 +1,41 @@
 (function() {
+
+    Parse.initialize('FNbbf27LU4JUiKWVLEyNJ1HpCTVyF8aJnSTAqdjK', 'XL9j5nbHUEQaIxkErFN3a27oRrVnzANm7ZzZTszM');
+
+    var Deck = Parse.Object.extend('Deck');
+
+    var DeckCollection = Parse.Collection.extend({
+        model: Deck
+    });
+    var deckCollection = new DeckCollection();
+    deckCollection.comparator = function(object) {
+        // Return the decks sorted by name.
+        return object.get('name');
+    };
+    deckCollection.fetch({
+        success: function(collection) {
+            collection.each(function(object) {
+                console.warn(object);
+            });
+        },
+        error: function(collection, error) {
+            console.error('DeckCollection could not be retrieved');
+        }
+    });
+
+
+
+    // var deck = new Deck();
+    // deck.save({foo: "bar"}, {
+    // success: function(object) {
+    // $(".success").show();
+    // },
+    // error: function(model, error) {
+    // $(".error").show();
+    // }
+    // });
+
+
     var cards = [];
     var decks = [];
     var decksObj = {};
@@ -25,6 +62,29 @@
             }
         }
         deckName = loadDeck();
+
+        for (obj in decksObj) {
+            var d = decksObj[obj];
+            console.error('adding...', d)
+            deckCollection.add([
+                {
+                    author: d.author,
+                    name: d.name,
+                    items: d.items,
+                    slug: d.slug
+                }
+            ]);
+        }
+
+        deckCollection.save(null, {
+            success: function(collection) {
+                console.log('DeckCollection saved successfully');
+            },
+            error: function(collection, error) {
+                console.error('Could not save DeckCollection:', error);
+            }
+        })
+
         loadDropdown(deckName);
     });
 
