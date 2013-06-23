@@ -1,15 +1,11 @@
-wisdumb
-=======
+# wisdumb
 
-
-Installation
-------------
+## Installation
 
     git clone git@github.com:cvan/wisdumb.git
 
 
-Development
------------
+## Development
 
 Open in the terminal:
 

@@ -1,101 +1,63 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>What to say?</title>
-        <meta charset="utf-8">
-        <meta name="robots" content="none">
-        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <link rel="stylesheet" type="text/css" href="style.css?1368866656700">
-    </head>
-    <body>
-        <header>
-            <h1 class="wordmark"><span class="logo"></span> What to say?</h1>
-        </header>
-
-        <menu class="main">
-            <button class="organize add-deck">Add deck</button>
-            <button class="organize edit-deck">Edit deck</button>
-            <form>
-                <select name="deck">
-                    <option value="">Select deck</option>
-                </select>
-            </form>
-            <button class="view-all">View all</button>
-            <button class="reset-all">Reset all</button>
-        </menu>
-
-        <div class="create create-deck">
-            <article>
-                <form class="form-new-deck" method="post">
-                    <label>
-                        Title
-                        <input type="text" name="title" required>
-                    </label>
-                    <label>
-                        Author
-                        <select name="author" required>
-                            <option value="">Select author</option>
-                            <option value="1">avi</option>
-                            <option value="0">seavan</option>
-                        </select>
-                    </label>
-                    <button type="submit">Add</button>
-                    <a href="javascript:" class="button cancel">Cancel</a>
-                </form>
-            </article>
-        </div>
-
-        <div class="create edit-deck">
-            <article>
-                <form class="form-edit-deck" method="post">
-                    <label>
-                        Title
-                        <input type="text" name="title" required>
-                    </label>
-                    <label>
-                        Author
-                        <select name="author" required>
-                            <option value="">Select author</option>
-                            <option value="1">avi</option>
-                            <option value="0">seavan</option>
-                        </select>
-                    </label>
-                    <button type="submit">Add</button>
-                    <a href="javascript:" class="button cancel">Cancel</a>
-                </form>
-            </article>
-        </div>
-        <main>
-            <menu>
-                <button class="organize add-card">Add card</button>
-                <button class="said-it">Said it</button>
-                <button class="forget-it">Forget it</button>
-                <button class="skip-it">Skip it</button>
-            </menu>
-            <div class="view"></div>
-            <div class="create create-card">
-                <article>
-                    <form class="form-new-card">
-                        <label>
-                            Title
-                            <textarea name="body" required></textarea>
-                        </label>
-                        <label>
-                            Details
-                            <textarea name="details"></textarea>
-                        </label>
-                        <button type="submit">Add</button>
-                        <a href="javascript:" class="button cancel">Cancel</a>
-                    </form>
-                </article>
-            </div>
-        </main>
-
-        <script type="text/javascript" src="zepto.min.js?1368866656700"></script>
-        <script type="text/javascript" src="https://www.parsecdn.com/js/parse-1.2.8.min.js"></script>
-        <script type="text/javascript" src="https://cdn.firebase.com/v0/firebase.js"></script>
-        <script type="text/javascript" src="pointer.js?1368866656700"></script>
-        <script type="text/javascript" src="main.js?1368866656700"></script>
-    </body>
+<!doctype html>
+<html lang="en" ng-app="todomvc" data-framework="angularjs">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>wisdumb</title>
+		<link rel="stylesheet" href="bower_components/todomvc-common/base.css">
+		<style>[ng-cloak] { display: none; }</style>
+	</head>
+	<body>
+		<section id="todoapp" ng-controller="TodoCtrl">
+			<header id="header">
+				<h1>wisdumb</h1>
+				<form id="todo-form" ng-submit="addTodo()">
+					<input id="new-todo" placeholder="Enter new words of wisdumb" ng-model="newTodo" autofocus>
+				</form>
+			</header>
+			<section id="main" ng-show="todos.length" ng-cloak>
+				<input id="toggle-all" type="checkbox" ng-model="allChecked" ng-click="markAll(allChecked)">
+				<label for="toggle-all">Mark all as complete</label>
+				<ul id="todo-list">
+					<li ng-repeat="todo in todos | filter:statusFilter" ng-class="{completed: todo.completed, editing: todo == editedTodo}">
+						<div class="view">
+							<input class="toggle" type="checkbox" ng-model="todo.completed" ng-change="todoCompleted(todo)">
+							<label ng-dblclick="editTodo(todo)">{{todo.title}}</label>
+							<button class="destroy" ng-click="removeTodo(todo)"></button>
+						</div>
+						<form ng-submit="doneEditing(todo)">
+							<input class="edit" ng-model="todo.title" todo-blur="doneEditing(todo)" todo-focus="todo == editedTodo">
+						</form>
+					</li>
+				</ul>
+			</section>
+			<footer id="footer" ng-show="todos.length" ng-cloak>
+				<span id="todo-count"><strong>{{remainingCount}}</strong>
+					<ng-pluralize count="remainingCount" when="{ one: 'item left', other: 'items left' }"></ng-pluralize>
+				</span>
+				<ul id="filters">
+					<li>
+						<a ng-class="{selected: location.path() == '/'} " href="#/">All</a>
+					</li>
+					<li>
+						<a ng-class="{selected: location.path() == '/active'}" href="#/active">Active</a>
+					</li>
+					<li>
+						<a ng-class="{selected: location.path() == '/completed'}" href="#/completed">Completed</a>
+					</li>
+				</ul>
+				<button id="clear-completed" ng-click="clearCompletedTodos()" ng-show="remainingCount < todos.length">Clear completed ({{todos.length - remainingCount}})</button>
+			</footer>
+		</section>
+		<footer class="credits">
+			<p>Made by <a href="https://github.com/kotteavi">Avi</a> and <a href="https://github.com/cvan">Chris</a></p>
+		</footer>
+		<script src="https://www.parsecdn.com/js/parse-1.2.8.min.js"></script>
+		<script src="bower_components/angular/angular.js"></script>
+		<script src="js/app.js"></script>
+		<script src="js/controllers/todoCtrl.js"></script>
+		<script src="js/services/todoStorage.js"></script>
+		<script src="js/directives/todoFocus.js"></script>
+		<script src="js/directives/todoBlur.js"></script>
+	</body>
 </html>
