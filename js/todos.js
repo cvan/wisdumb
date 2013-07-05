@@ -85,7 +85,8 @@ $(function() {
         // The DOM events specific to an item.
         events: {
             'click .toggle': 'toggleDone',
-            'dblclick label.todo-content': 'edit',
+            'dblclick': 'edit',
+            'click .todo-edit': 'edit',
             'click .todo-destroy': 'clear',
             'keypress .edit': 'updateOnEnter',
             'blur .edit': 'close'

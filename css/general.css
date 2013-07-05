@@ -274,13 +274,28 @@ label[for='toggle-all'] {
     line-height: 1.2;
     margin: 15px 15px 15px 60px;
     transition: color 0.4s;
-    width: 100%;
     word-break: break-word;
 }
 
 #todo-list li.completed label {
     color: #a9a9a9;
     text-decoration: line-through;
+}
+
+.todo-edit {
+    display: none;
+}
+
+#todo-list li:hover .todo-edit {
+    display: inline-block;
+    /*position: absolute;
+    top: 0;
+    right: 0;*/
+    margin-right: 40px;
+    color: #ccc;
+    font-size: 14px;
+    text-decoration: none;
+    font-style: italic;
 }
 
 #todo-list li .todo-destroy {
