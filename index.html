@@ -1,63 +1,94 @@
-<!doctype html>
-<html lang="en" ng-app="todomvc" data-framework="angularjs">
+<!DOCTYPE html>
+<html>
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="robots" content="none">
         <title>wisdumb</title>
-        <link rel="stylesheet" href="bower_components/todomvc-common/base.css">
-        <style>[ng-cloak] { display: none; }</style>
+        <link href="css/general.css" media="all" rel="stylesheet" type="text/css">
     </head>
     <body>
-        <section id="todoapp" ng-controller="TodoCtrl">
-            <header id="header">
+        <!-- App Interface -->
+
+        <div id="todoapp">
+            <div class="title">
                 <h1>wisdumb</h1>
-                <form id="todo-form" ng-submit="addTodo()">
-                    <input id="new-todo" placeholder="Enter new words of wisdumb" ng-model="newTodo" autofocus>
-                </form>
-            </header>
-            <section id="main" ng-show="todos.length" ng-cloak>
-                <input id="toggle-all" type="checkbox" ng-model="allChecked" ng-click="markAll(allChecked)">
-                <label for="toggle-all">Mark all as complete</label>
-                <ul id="todo-list">
-                    <li ng-repeat="todo in todos | filter:statusFilter" ng-class="{completed: todo.completed, editing: todo == editedTodo}">
-                        <div class="view">
-                            <input class="toggle" type="checkbox" ng-model="todo.completed" ng-change="todoCompleted(todo)">
-                            <label ng-dblclick="editTodo(todo)">{{todo.title}}</label>
-                            <button class="destroy" ng-click="removeTodo(todo)"></button>
-                        </div>
-                        <form ng-submit="doneEditing(todo)">
-                            <input class="edit" ng-model="todo.title" todo-blur="doneEditing(todo)" todo-focus="todo == editedTodo">
-                        </form>
-                    </li>
-                </ul>
-            </section>
-            <footer id="footer" ng-show="todos.length" ng-cloak>
-                <span id="todo-count"><strong>{{remainingCount}}</strong>
-                    <ng-pluralize count="remainingCount" when="{ one: 'item left', other: 'items left' }"></ng-pluralize>
-                </span>
-                <ul id="filters">
-                    <li>
-                        <a ng-class="{selected: location.path() == '/'} " href="#/">All</a>
-                    </li>
-                    <li>
-                        <a ng-class="{selected: location.path() == '/active'}" href="#/active">Active</a>
-                    </li>
-                    <li>
-                        <a ng-class="{selected: location.path() == '/completed'}" href="#/completed">Completed</a>
-                    </li>
-                </ul>
-                <button id="clear-completed" ng-click="clearCompletedTodos()" ng-show="remainingCount < todos.length">Clear completed ({{todos.length - remainingCount}})</button>
-            </footer>
-        </section>
-        <footer class="credits">
+            </div>
+            <div class="content"></div>
+        </div>
+        <div class="credits">
             <p>Made by <a href="https://github.com/kotteavi">Avi</a> and <a href="https://github.com/cvan">Chris</a></p>
-        </footer>
-        <script src="https://www.parsecdn.com/js/parse-1.2.8.min.js"></script>
-        <script src="bower_components/angular/angular.js"></script>
-        <script src="js/app.js"></script>
-        <script src="js/controllers/todoCtrl.js"></script>
-        <script src="js/services/todoStorage.js"></script>
-        <script src="js/directives/todoFocus.js"></script>
-        <script src="js/directives/todoBlur.js"></script>
+        </div>
+
+        <!-- Templates -->
+
+        <script type="text/template" id="login-template">
+            <header id="header"></header>
+            <div class="login">
+                <form class="login-form">
+                    <h2>Log In</h2>
+                    <div class="error hidden"</div>
+                    <input type="text" id="login-username" placeholder="Username">
+                    <input type="password" id="login-password" placeholder="Password">
+                    <button>Log In</button>
+                </form>
+                <form class="signup-form">
+                    <h2>Sign Up</h2>
+                    <div class="error hidden"></div>
+                    <input type="text" id="signup-username" placeholder="Username">
+                    <input type="password" id="signup-password" placeholder="Create a Password">
+                    <button>Sign Up</button>
+                </form>
+            </div>
+        </script>
+
+        <script type="text/template" id="manage-todos-template">
+            <div id="user-info">
+                Signed in as <b><%= Parse.User.current().get('username') %></b> (<a href="#" class="log-out">Log out</a>)
+            </div>
+
+            <div class="section">
+                <header id="header">
+                    <input id="new-todo" placeholder="Enter new words of wisdumb" type="text">
+                </header>
+                <div id="main">
+                    <input id="toggle-all" type="checkbox">
+                    <label for="toggle-all">Mark all as complete</label>
+                    <ul id="todo-list">
+                        <img src="images/spinner.gif" class="spinner">
+                    </ul>
+                </div>
+                <div id="todo-stats"></div>
+            </div>
+        </script>
+
+        <script type="text/template" id="item-template">
+            <li<%= done ? ' class="completed"' : '' %>>
+                <div class="view">
+                    <input class="toggle" type="checkbox"<%= done ? ' checked' : '' %>>
+                    <label class="todo-content"><%= content %></label>
+                    <button class="todo-destroy"></button>
+                </div>
+                <input class="edit" value="<%= content %>">
+            </li>
+        </script>
+
+        <script type="text/template" id="stats-template">
+            <footer class="footer">
+                <span id="todo-count"><strong><%= remaining %></strong> <%= remaining == 1 ? 'item' : 'items' %> left</span>
+                <ul id="filters">
+                    <li><a href="javascript:void(0)" id="all" class="selected">All</a></li>
+                    <li><a href="javascript:void(0)" id="active">Active</a></li>
+                    <li><a href="javascript:void(0)" id="completed">Completed</a></li>
+                </ul>
+                <button id="clear-completed">Clear completed (<%= done %>)</button>
+            </footer>
+        </script>
+
+        <!-- Scripts -->
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script src="js/underscore-1.1.6.js"></script>
+        <script src="http://www.parsecdn.com/js/parse-1.1.15.min.js"></script>
+        <script src="js/todos.js"></script>
     </body>
 </html>
