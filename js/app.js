@@ -9,4 +9,6 @@
  */
 var todomvc = angular.module('todomvc', []);
 
-Parse.initialize('FNbbf27LU4JUiKWVLEyNJ1HpCTVyF8aJnSTAqdjK', 'XL9j5nbHUEQaIxkErFN3a27oRrVnzANm7ZzZTszM');
+if ('Parse' in window) {
+    Parse.initialize('FNbbf27LU4JUiKWVLEyNJ1HpCTVyF8aJnSTAqdjK', 'XL9j5nbHUEQaIxkErFN3a27oRrVnzANm7ZzZTszM');
+}
