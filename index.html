@@ -47,6 +47,22 @@
             </div>
 
             <div class="section">
+
+                <div style="display: none;" id="application">
+                    Search a game:
+                    <div>
+                        <input type="text" id="typehere" class="typebox">
+                        <button id="search">Search ROMS</button>
+                        <button id="reload">Reload DB</button>
+                    </div>
+                    <div style="clear:both" id="results">
+                    </div>
+                </div>
+                <div id="loading">
+                    Loading the data into the indexes: <span id="progress"></span>%
+                    <p/>This operation is only done once.
+                </div>
+
                 <header id="header">
                     <input id="new-todo" placeholder="Enter new words of wisdumb" type="text">
                 </header>
