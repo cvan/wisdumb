@@ -1,4 +1,4 @@
-$(function() {
+(function() {
     Parse.$ = jQuery;
 
     // These are the Parse application JavaScript keys.
@@ -210,6 +210,7 @@ $(function() {
             }));
 
             this.delegateEvents();
+            $(document).trigger('todosrendered');
 
             this.allCheckbox.checked = !remaining;
         },
@@ -296,6 +297,10 @@ $(function() {
             this.todos.each(function(todo) {
                 todo.save({'done': done});
             });
+        },
+
+        getAll: function() {
+            return this.todos;
         }
     });
 
@@ -319,7 +324,7 @@ $(function() {
 
             Parse.User.logIn(username, password, {
                 success: function(user) {
-                    new ManageTodosView();
+                    window.manageView = new ManageTodosView();
                     self.undelegateEvents();
                     delete self;
                 },
@@ -341,7 +346,7 @@ $(function() {
 
             Parse.User.signUp(username, password, {ACL: new Parse.ACL()}, {
                 success: function(user) {
-                    new ManageTodosView();
+                    window.manageView = new ManageTodosView();
                     self.undelegateEvents();
                     delete self;
                 },
@@ -375,7 +380,7 @@ $(function() {
 
         render: function() {
             if (Parse.User.current()) {
-                new ManageTodosView();
+                window.manageView = new ManageTodosView();
             } else {
                 new LogInView();
             }
@@ -410,4 +415,4 @@ $(function() {
     new AppRouter;
     new AppView;
     Parse.history.start();
-});
+})();

@@ -21,42 +21,37 @@
          * @param progress if the indexes need to be initialized, this function is called with the progress value, ranging from 0 to 1.
          */
         this.start = function(callback, progress) {
-            var loader = new fullproof.DataLoader();
-            loader.setQueue('mamegames.txt');
-            loader.start(function() {
-                var index1 = new fullproof.IndexUnit('normalindex',
-                    new fullproof.Capabilities().setStoreObjects(false)
-                                                .setUseScores(true)
-                                                .setDbName(dbName)
-                                                .setComparatorObject(fullproof.ScoredEntry.comparatorObject)
-                                                .setDbSize(8 * 1024 * 1024),
-                    new fullproof.ScoringAnalyzer(fullproof.normalizer.to_lowercase_nomark,
-                                                  fullproof.normalizer.remove_duplicate_letters),
-                    makeInitializer(function(val) {
-                        progress(val / 2);
-                    }));
 
-                var index2 = new fullproof.IndexUnit('stemmedindex',
-                    new fullproof.Capabilities().setStoreObjects(false)
-                                                .setUseScores(true)
-                                                .setDbName(dbName)
-                                                .setComparatorObject(fullproof.ScoredEntry.comparatorObject)
-                                                .setDbSize(8 * 1024 * 1024),
-                    new fullproof.ScoringAnalyzer(fullproof.normalizer.to_lowercase_nomark,
-                                                  fullproof.english.metaphone),
-                    makeInitializer(function(val) {
-                        progress(val / 2 + 0.5);
-                    }));
+            data = window.manageView.getAll().map(function(x) { return x.attributes.content; });
+            console.error(data)
 
-                engine.open([index1, index2],
-                            fullproof.make_callback(callback, true),
-                            fullproof.make_callback(callback, false));
-            }, function(txt, file) {
-                data = txt.split('\n');
-            },
-            function() {
-                console && console.log && console.log('ERROR');
-            });
+            var index1 = new fullproof.IndexUnit('normalindex',
+                new fullproof.Capabilities().setStoreObjects(false)
+                                            .setUseScores(true)
+                                            .setDbName(dbName)
+                                            .setComparatorObject(fullproof.ScoredEntry.comparatorObject)
+                                            .setDbSize(8 * 1024 * 1024),
+                new fullproof.ScoringAnalyzer(fullproof.normalizer.to_lowercase_nomark,
+                                              fullproof.normalizer.remove_duplicate_letters),
+                makeInitializer(function(val) {
+                    progress(val / 2);
+                }));
+
+            var index2 = new fullproof.IndexUnit('stemmedindex',
+                new fullproof.Capabilities().setStoreObjects(false)
+                                            .setUseScores(true)
+                                            .setDbName(dbName)
+                                            .setComparatorObject(fullproof.ScoredEntry.comparatorObject)
+                                            .setDbSize(8 * 1024 * 1024),
+                new fullproof.ScoringAnalyzer(fullproof.normalizer.to_lowercase_nomark,
+                                              fullproof.english.metaphone),
+                makeInitializer(function(val) {
+                    progress(val / 2 + 0.5);
+                }));
+
+            engine.open([index1, index2],
+                        fullproof.make_callback(callback, true),
+                        fullproof.make_callback(callback, false));
         }
 
         this.lookup = function(txt, callback) {
@@ -104,40 +99,42 @@
         return this;
     })();
 
-    WisdumbSearch.start(function(i) {
-        if (i) {
-            $('#loading').hide();
-            $('#application').show();
-        }
-    }, function(progress) {
-        $('#progress').html(parseInt(progress * 100));
-    });
-
-    var now = (function() {
-        var perf = window.performance || {};
-        var fn = perf.now || perf.mozNow || perf.webkitNow || perf.msNow || perf.oNow;
-        // fn.bind will be available in all the browsers that support the advanced window.performance... ;-)
-        return fn ? fn.bind(perf) : function() { return new Date().getTime(); };
-    })();
-
-    function search() {
-        var value = $("#typehere").val();
-
-        var startTime = now();
-
-        MameSearch.lookup(value, function(result) {
-            var time = now() - startTime;
-            time = time.toFixed(3);
-            result = "<div>Request processed in " + time + " ms</div>" + result;
-            $('#results').html(result);
+    $(document).on('todosrendered', function() {
+        WisdumbSearch.start(function(i) {
+            if (i) {
+                $('#loading').hide();
+                $('#application').show();
+            }
+        }, function(progress) {
+            $('#progress').html(parseInt(progress * 100));
         });
-    }
 
-    $('#search').click(search);
-    $('#typehere').change(search);
-    $('#reload').click(function() {
-        WisdumbSearch.reloadDatabase(function() {
-            window.location.reload(true);
+        var now = (function() {
+            var perf = window.performance || {};
+            var fn = perf.now || perf.mozNow || perf.webkitNow || perf.msNow || perf.oNow;
+            // fn.bind will be available in all the browsers that support the advanced window.performance... ;-)
+            return fn ? fn.bind(perf) : function() { return new Date().getTime(); };
+        })();
+
+        function search() {
+            var value = $("#typehere").val();
+
+            var startTime = now();
+
+            WisdumbSearch.lookup(value, function(result) {
+                var time = now() - startTime;
+                time = time.toFixed(3);
+                result = "<div>Request processed in " + time + " ms</div>" + result;
+                $('#results').html(result);
+            });
+        }
+
+        $('#search').click(search);
+        $('#typehere').change(search);
+        $('#reload').click(function() {
+            WisdumbSearch.reloadDatabase(function() {
+                window.location.reload(true);
+            });
         });
     });
 
