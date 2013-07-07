@@ -287,7 +287,7 @@ label[for='toggle-all'] {
 }
 
 #todo-list li:hover .todo-edit {
-    display: inline-block;
+    display: none;
     /*position: absolute;
     top: 0;
     right: 0;*/
@@ -499,4 +499,51 @@ label[for='toggle-all'] {
 
 .credits a {
     color: inherit;
+}
+
+#results {
+    clear: both;
+}
+
+legend {
+    color: #999;
+}
+
+.search {
+    padding: 0 15px 15px 60px;
+}
+
+.search button {
+    background: #eee;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 2px 6px;
+}
+
+.search button:hover {
+    border-color: #aaa;
+    color: #333;
+}
+
+.search tr td {
+    border-top: 1px dashed #ccc;
+    padding: 5px 0;
+}
+
+#search {
+    background: #e0ffff;
+    border-color: cyan;
+    color: darkcyan;
+    margin-left: 5px;
+}
+
+#search:hover {
+    background: #acf5f6;
+    border-color: #109193;
+    color: #084646;
+}
+
+#reload, #clear {
+    float: right;
 }

@@ -71,22 +71,24 @@
 
                 var result = '';
                 if (resultset.getSize() == 0) {
-                    result += "<div style='font-weight:bold;'>No result found for query '" + txt + '"</div>';
+                    result += "<div style='font-weight:bold;'>No result found for query &ldquo;" + txt + '&rdquo;</div>';
                 } else {
                     result += "<div>" + resultset.getSize() + " entr" + (resultset.getSize() > 1 ? 'ies were' : 'y was') + " found</div>";
                 }
-                result += "<table><tr><th>ROM</th><th>Name</th><th>Search score</th></tr>";
+                result += "<table><tr><th>Tip</th><th>Search score</th></tr>";
                 resultset.forEach(function(entry) {
                     if (entry instanceof fullproof.ScoredElement) {
                         var line = data[entry.value];
-                        var split = line.split(';');
-                        result += "<tr><td>" + (split[0] || '-') + "</td><td>" + (split[1] || '-') + "</td><td>"+entry.score.toFixed(3)+"</td></tr>";
+                        result += '<tr><td>' + (line || '-') + '</td><td>' + entry.score.toFixed(3) + '</td></tr>';
                     } else {
-                        var split = data[line].split(';');
-                        result += "<tr><td>" + (split[0] || '-') + "</td><td>" + (split[1] || '-') + "</td></tr>";
+                        result += '<tr><td>' + (data[line] || '-') + '</td></tr>';
                     }
                 });
                 result += '</table>';
+
+                if (!txt) {
+                    result = '';
+                }
 
                 callback(result);
             });
@@ -125,9 +127,16 @@
                 var time = now() - startTime;
                 time = time.toFixed(3);
                 result = "<div>Request processed in " + time + " ms</div>" + result;
+                if (!value) {
+                    result = '';
+                }
                 $('#results').html(result);
             });
         }
+
+        $('#clear').click(function() {
+            $('#results').html('');
+        });
 
         $('#search').click(search);
         $('#typehere').change(search);

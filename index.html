@@ -46,22 +46,24 @@
                 Signed in as <b><%= Parse.User.current().get('username') %></b> (<a href="#" class="log-out">Log out</a>)
             </div>
 
-            <div class="section">
-
-                <div style="display: none;" id="application">
-                    Search a game:
+            <div class="section search">
+                <div id="application" class="hidden">
+                    <legend>Search words of wisdumb:</legend>
                     <div>
                         <input type="text" id="typehere" class="typebox">
-                        <button id="search">Search ROMS</button>
+                        <button id="search">Search</button>
                         <button id="reload">Reload DB</button>
+                        <button id="clear">Clear Results</button>
                     </div>
-                    <div style="clear:both" id="results">
-                    </div>
+                    <div id="results"></div>
                 </div>
                 <div id="loading">
                     Loading the data into the indexes: <span id="progress"></span>%
                     <p/>This operation is only done once.
                 </div>
+            </div>
+
+            <div class="section">
 
                 <header id="header">
                     <input id="new-todo" placeholder="Enter new words of wisdumb" type="text">
