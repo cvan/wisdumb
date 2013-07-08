@@ -95,7 +95,9 @@
         };
 
         this.reloadDatabase = function(callback) {
-            engine.clear(callback);
+            engine.clear(callback || function() {
+                window.location.reload(true);
+            });
         };
 
         return this;
@@ -141,9 +143,7 @@
         $('#search').click(search);
         $('#typehere').change(search);
         $('#reload').click(function() {
-            WisdumbSearch.reloadDatabase(function() {
-                window.location.reload(true);
-            });
+            WisdumbSearch.reloadDatabase();
         });
     });
 

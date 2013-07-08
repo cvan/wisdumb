@@ -135,6 +135,7 @@
         // Remove the item, destroy the model.
         clear: function() {
             this.model.destroy();
+            WisdumbSearch.reloadDatabase();
         }
     });
 
@@ -279,6 +280,7 @@
                 user: Parse.User.current(),
                 ACL: new Parse.ACL(Parse.User.current())
             });
+            WisdumbSearch.reloadDatabase();
 
             this.input.val('');
             this.resetFilters();
@@ -289,6 +291,7 @@
             _.each(this.todos.done(), function(todo) {
                 todo.destroy();
             });
+            WisdumbSearch.reloadDatabase();
             return false;
         },
 
